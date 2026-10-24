@@ -6,10 +6,7 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"includes": [
-			"**",
-			"!src/api/schema.d.ts"
-		],
+		"includes": ["**", "!src/api/schema.d.ts"],
 		"ignoreUnknown": false
 	},
 	"formatter": {
@@ -26,6 +23,11 @@
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "double"
+		}
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
 		}
 	},
 	"assist": {
