@@ -7,7 +7,7 @@ import { StrictMode } from "react";
 
 const queryClient = new QueryClient();
 const root = document.getElementById("root");
-if (!root) throw new Error("Elemento #root não encontrado");
+if (!root) throw new Error("Element #root not found");
 
 createRoot(root).render(
 	<StrictMode>
