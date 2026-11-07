@@ -4,6 +4,7 @@ import { RootLayout } from "./components/layout";
 import { EventsPage } from "./pages/events-page";
 import { LoginPage } from "./pages/login-page";
 import { NotFoundPage } from "./pages/not-found-page";
+import { RegisterPage } from "./pages/register-page";
 import { MyTicketsPage } from "./pages/tickets-page";
 
 const router = createBrowserRouter([
@@ -12,12 +13,13 @@ const router = createBrowserRouter([
 		element: <RootLayout />,
 		children: [
 			{ index: true, element: <EventsPage /> },
-			{ path: "*", element: <NotFoundPage /> },
 			{ path: "login", element: <LoginPage /> },
+			{ path: "register", element: <RegisterPage /> },
 			{
 				element: <RequireAuth />,
 				children: [{ path: "tickets", element: <MyTicketsPage /> }],
 			},
+			{ path: "*", element: <NotFoundPage /> },
 		],
 	},
 ]);

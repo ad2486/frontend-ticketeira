@@ -36,7 +36,10 @@ export function RootLayout() {
 							</Button>
 						</div>
 					) : (
-						<Link to="/login">Log in</Link>
+						<div className="flex items-center gap-4">
+							<Link to="/register">Create account</Link>
+							<Link to="/login">Log in</Link>
+						</div>
 					)}
 				</div>
 			</header>

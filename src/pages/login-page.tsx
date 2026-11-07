@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { z } from "zod/v4";
 import { api } from "@/api/client";
 import { errorMessage } from "@/api/errors";
@@ -22,7 +22,8 @@ export function LoginPage() {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const location = useLocation();
-	const from = (location.state as { from?: string } | null)?.from ?? "/";
+	const state = location.state as { from?: string; registered?: boolean } | null;
+	const from = state?.from ?? "/";
 	const { register, handleSubmit, formState } = useForm<LoginForm>({
 		resolver: zodResolver(loginSchema),
 	});
@@ -37,6 +38,7 @@ export function LoginPage() {
 	const onSubmit = (data: LoginForm) => login.mutate(data);
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
+			{state?.registered && <p className="text-sm">Account created, please log in.</p>}
 			<FormField
 				id="email"
 				label="Email"
@@ -56,6 +58,12 @@ export function LoginPage() {
 			<Button type="submit" disabled={login.isPending}>
 				Log in
 			</Button>
+			<p className="text-sm">
+				No account yet?{" "}
+				<Link to="/register" className="underline">
+					Create one
+				</Link>
+			</p>
 		</form>
 	);
 }
