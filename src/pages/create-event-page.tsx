@@ -9,6 +9,7 @@ import { queryKeys } from "@/api/query-keys";
 import { unwrap } from "@/api/unwrap";
 import { FormField } from "@/components/form-field";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { brazilStates } from "@/lib/brazil-states";
 import { saoPauloLocalToIso } from "@/lib/format";
@@ -71,106 +72,119 @@ export function CreateEventPage() {
 	const { errors } = formState;
 
 	return (
-		<div className="max-w-sm mx-auto px-4 py-8 flex flex-col gap-6">
-			<h1 className="text-2xl font-bold">Create event</h1>
-			<form
-				onSubmit={handleSubmit((form) => createEvent.mutate(form))}
-				className="flex flex-col gap-4"
-			>
-				<FormField
-					id="title"
-					label="Title"
-					registration={register("title")}
-					error={errors.title?.message}
-				/>
-
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="description">Description (optional)</Label>
-					<textarea
-						id="description"
-						rows={3}
-						className="rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm"
-						{...register("description")}
-					/>
-				</div>
-
-				<FormField
-					id="location"
-					label="Location"
-					placeholder="Venue name"
-					registration={register("location")}
-					error={errors.location?.message}
-				/>
-				<FormField
-					id="city"
-					label="City"
-					registration={register("city")}
-					error={errors.city?.message}
-				/>
-
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="state">State</Label>
-					<select
-						id="state"
-						defaultValue=""
-						aria-invalid={errors.state ? true : undefined}
-						className="h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm aria-invalid:border-destructive"
-						{...register("state")}
+		<div className="max-w-md mx-auto px-4 py-10">
+			<Card>
+				<CardHeader>
+					<CardTitle>Create event</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<form
+						onSubmit={handleSubmit((form) => createEvent.mutate(form))}
+						className="flex flex-col gap-4"
 					>
-						<option value="" disabled>
-							Select...
-						</option>
-						{brazilStates.map((uf) => (
-							<option key={uf} value={uf}>
-								{uf}
-							</option>
-						))}
-					</select>
-					{errors.state && <p className="text-sm text-destructive">{errors.state.message}</p>}
-				</div>
+						<FormField
+							id="title"
+							label="Title"
+							registration={register("title")}
+							error={errors.title?.message}
+						/>
 
-				<FormField
-					id="startsAt"
-					label="Starts at (São Paulo time)"
-					type="datetime-local"
-					registration={register("startsAt")}
-					error={errors.startsAt?.message}
-				/>
-				<FormField
-					id="capacity"
-					label="Capacity"
-					type="number"
-					min={1}
-					step={1}
-					registration={register("capacity", { valueAsNumber: true })}
-					error={errors.capacity?.message}
-				/>
-				<FormField
-					id="minAge"
-					label="Minimum age"
-					type="number"
-					min={0}
-					step={1}
-					registration={register("minAge", { valueAsNumber: true })}
-					error={errors.minAge?.message}
-				/>
-				<FormField
-					id="price"
-					label="Ticket price (R$)"
-					type="number"
-					min={0}
-					step={0.01}
-					registration={register("price", { valueAsNumber: true })}
-					error={errors.price?.message}
-				/>
+						<div className="flex flex-col gap-2">
+							<Label htmlFor="description">Description (optional)</Label>
+							<textarea
+								id="description"
+								rows={3}
+								className="w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:text-sm"
+								{...register("description")}
+							/>
+						</div>
 
-				{createEvent.error && (
-					<p className="text-sm text-destructive">{errorMessage(createEvent.error)}</p>
-				)}
-				<Button type="submit" disabled={createEvent.isPending}>
-					Create event
-				</Button>
-			</form>
+						<FormField
+							id="location"
+							label="Location"
+							placeholder="Venue name"
+							registration={register("location")}
+							error={errors.location?.message}
+						/>
+
+						<div className="grid gap-4 sm:grid-cols-2">
+							<FormField
+								id="city"
+								label="City"
+								registration={register("city")}
+								error={errors.city?.message}
+							/>
+
+							<div className="flex flex-col gap-2">
+								<Label htmlFor="state">State</Label>
+								<select
+									id="state"
+									defaultValue=""
+									aria-invalid={errors.state ? true : undefined}
+									className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm"
+									{...register("state")}
+								>
+									<option value="" disabled>
+										Select...
+									</option>
+									{brazilStates.map((uf) => (
+										<option key={uf} value={uf}>
+											{uf}
+										</option>
+									))}
+								</select>
+								{errors.state && <p className="text-sm text-destructive">{errors.state.message}</p>}
+							</div>
+						</div>
+
+						<FormField
+							id="startsAt"
+							label="Starts at (São Paulo time)"
+							type="datetime-local"
+							registration={register("startsAt")}
+							error={errors.startsAt?.message}
+						/>
+
+						<div className="grid gap-4 sm:grid-cols-2">
+							<FormField
+								id="capacity"
+								label="Capacity"
+								type="number"
+								min={1}
+								step={1}
+								registration={register("capacity", { valueAsNumber: true })}
+								error={errors.capacity?.message}
+							/>
+							<FormField
+								id="minAge"
+								label="Minimum age"
+								type="number"
+								min={0}
+								step={1}
+								registration={register("minAge", { valueAsNumber: true })}
+								error={errors.minAge?.message}
+							/>
+						</div>
+
+						<FormField
+							id="price"
+							label="Ticket price (R$)"
+							type="number"
+							min={0}
+							step={0.01}
+							registration={register("price", { valueAsNumber: true })}
+							error={errors.price?.message}
+						/>
+
+						{createEvent.error && (
+							<p className="text-sm text-destructive">{errorMessage(createEvent.error)}</p>
+						)}
+						<Button type="submit" className="w-full" disabled={createEvent.isPending}>
+							Create event
+						</Button>
+					</form>
+				</CardContent>
+			</Card>
 		</div>
 	);
 }

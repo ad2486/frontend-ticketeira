@@ -10,6 +10,7 @@ import { unwrap } from "@/api/unwrap";
 import { setAccessToken } from "@/auth/token";
 import { FormField } from "@/components/form-field";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const loginSchema = z.object({
 	email: z.email("Invalid email"),
@@ -37,33 +38,46 @@ export function LoginPage() {
 	});
 	const onSubmit = (data: LoginForm) => login.mutate(data);
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
-			{state?.registered && <p className="text-sm">Account created, please log in.</p>}
-			<FormField
-				id="email"
-				label="Email"
-				type="email"
-				registration={register("email")}
-				error={formState.errors.email?.message}
-			/>
-			<FormField
-				id="password"
-				label="Password"
-				type="password"
-				registration={register("password")}
-				error={formState.errors.password?.message}
-			/>
+		<div className="max-w-md mx-auto px-4 py-10">
+			<Card>
+				<CardHeader>
+					<CardTitle>Log in</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+						{state?.registered && (
+							<p className="rounded-lg border border-primary/30 bg-primary/5 px-3 py-2 text-sm">
+								Account created, please log in.
+							</p>
+						)}
+						<FormField
+							id="email"
+							label="Email"
+							type="email"
+							registration={register("email")}
+							error={formState.errors.email?.message}
+						/>
+						<FormField
+							id="password"
+							label="Password"
+							type="password"
+							registration={register("password")}
+							error={formState.errors.password?.message}
+						/>
 
-			{login.error && <p>{errorMessage(login.error)}</p>}
-			<Button type="submit" disabled={login.isPending}>
-				Log in
-			</Button>
-			<p className="text-sm">
-				No account yet?{" "}
-				<Link to="/register" className="underline">
-					Create one
-				</Link>
-			</p>
-		</form>
+						{login.error && <p className="text-sm text-destructive">{errorMessage(login.error)}</p>}
+						<Button type="submit" className="w-full" disabled={login.isPending}>
+							Log in
+						</Button>
+						<p className="text-sm text-muted-foreground">
+							No account yet?{" "}
+							<Link to="/register" className="text-primary underline-offset-4 hover:underline">
+								Create one
+							</Link>
+						</p>
+					</form>
+				</CardContent>
+			</Card>
+		</div>
 	);
 }

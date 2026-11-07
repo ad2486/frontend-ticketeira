@@ -8,6 +8,7 @@ import { errorMessage } from "@/api/errors";
 import { unwrap } from "@/api/unwrap";
 import { FormField } from "@/components/form-field";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { brazilStates } from "@/lib/brazil-states";
 
@@ -39,85 +40,96 @@ export function RegisterPage() {
 	const { errors } = formState;
 
 	return (
-		<div className="max-w-sm mx-auto px-4 py-8 flex flex-col gap-6">
-			<h1 className="text-2xl font-bold">Create account</h1>
-			<form onSubmit={handleSubmit((data) => signUp.mutate(data))} className="flex flex-col gap-4">
-				<FormField
-					id="name"
-					label="Name"
-					registration={register("name")}
-					error={errors.name?.message}
-				/>
-				<FormField
-					id="email"
-					label="Email"
-					type="email"
-					registration={register("email")}
-					error={errors.email?.message}
-				/>
-				<FormField
-					id="cpf"
-					label="CPF"
-					inputMode="numeric"
-					placeholder="Numbers only"
-					registration={register("cpf")}
-					error={errors.cpf?.message}
-				/>
-				<FormField
-					id="city"
-					label="City"
-					registration={register("city")}
-					error={errors.city?.message}
-				/>
-
-				<div className="flex flex-col gap-2">
-					<Label htmlFor="state">State</Label>
-					<select
-						id="state"
-						defaultValue=""
-						aria-invalid={errors.state ? true : undefined}
-						className="h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm aria-invalid:border-destructive"
-						{...register("state")}
+		<div className="max-w-md mx-auto px-4 py-10">
+			<Card>
+				<CardHeader>
+					<CardTitle>Create account</CardTitle>
+				</CardHeader>
+				<CardContent className="flex flex-col gap-4">
+					<form
+						onSubmit={handleSubmit((data) => signUp.mutate(data))}
+						className="flex flex-col gap-4"
 					>
-						<option value="" disabled>
-							Select...
-						</option>
-						{brazilStates.map((uf) => (
-							<option key={uf} value={uf}>
-								{uf}
-							</option>
-						))}
-					</select>
-					{errors.state && <p className="text-sm text-destructive">{errors.state.message}</p>}
-				</div>
+						<FormField
+							id="name"
+							label="Name"
+							registration={register("name")}
+							error={errors.name?.message}
+						/>
+						<FormField
+							id="email"
+							label="Email"
+							type="email"
+							registration={register("email")}
+							error={errors.email?.message}
+						/>
+						<FormField
+							id="cpf"
+							label="CPF"
+							inputMode="numeric"
+							placeholder="Numbers only"
+							registration={register("cpf")}
+							error={errors.cpf?.message}
+						/>
+						<FormField
+							id="city"
+							label="City"
+							registration={register("city")}
+							error={errors.city?.message}
+						/>
 
-				<FormField
-					id="birthDate"
-					label="Birth date"
-					type="date"
-					registration={register("birthDate")}
-					error={errors.birthDate?.message}
-				/>
-				<FormField
-					id="password"
-					label="Password"
-					type="password"
-					autoComplete="new-password"
-					registration={register("password")}
-					error={errors.password?.message}
-				/>
+						<div className="flex flex-col gap-2">
+							<Label htmlFor="state">State</Label>
+							<select
+								id="state"
+								defaultValue=""
+								aria-invalid={errors.state ? true : undefined}
+								className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm"
+								{...register("state")}
+							>
+								<option value="" disabled>
+									Select...
+								</option>
+								{brazilStates.map((uf) => (
+									<option key={uf} value={uf}>
+										{uf}
+									</option>
+								))}
+							</select>
+							{errors.state && <p className="text-sm text-destructive">{errors.state.message}</p>}
+						</div>
 
-				{signUp.error && <p className="text-sm text-destructive">{errorMessage(signUp.error)}</p>}
-				<Button type="submit" disabled={signUp.isPending}>
-					Create account
-				</Button>
-			</form>
-			<p className="text-sm">
-				Already have an account?{" "}
-				<Link to="/login" className="underline">
-					Log in
-				</Link>
-			</p>
+						<FormField
+							id="birthDate"
+							label="Birth date"
+							type="date"
+							registration={register("birthDate")}
+							error={errors.birthDate?.message}
+						/>
+						<FormField
+							id="password"
+							label="Password"
+							type="password"
+							autoComplete="new-password"
+							registration={register("password")}
+							error={errors.password?.message}
+						/>
+
+						{signUp.error && (
+							<p className="text-sm text-destructive">{errorMessage(signUp.error)}</p>
+						)}
+						<Button type="submit" className="w-full" disabled={signUp.isPending}>
+							Create account
+						</Button>
+					</form>
+					<p className="text-sm text-muted-foreground">
+						Already have an account?{" "}
+						<Link to="/login" className="text-primary underline-offset-4 hover:underline">
+							Log in
+						</Link>
+					</p>
+				</CardContent>
+			</Card>
 		</div>
 	);
 }
