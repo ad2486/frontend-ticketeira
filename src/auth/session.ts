@@ -1,5 +1,6 @@
 import { api } from "@/api/client";
-import { setAccessToken } from "./token";
+import { queryClient } from "@/api/query-client";
+import { clearAccessToken, setAccessToken } from "./token";
 
 let refreshing: Promise<boolean> | null = null;
 
@@ -15,4 +16,13 @@ async function doRefresh() {
 	if (error) return false;
 	setAccessToken(data.accessToken);
 	return true;
+}
+
+export async function logout() {
+	try {
+		await api.POST("/auth/logout");
+	} finally {
+		clearAccessToken();
+		queryClient.clear();
+	}
 }
