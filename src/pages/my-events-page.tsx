@@ -55,7 +55,11 @@ export function MyEventsPage() {
 					<Skeleton className="h-16" />
 				</div>
 			)}
-			{events.error && <p className="text-sm text-destructive">{errorMessage(events.error)}</p>}
+			{events.error && (
+				<p role="alert" className="text-sm text-destructive">
+					{errorMessage(events.error)}
+				</p>
+			)}
 			{events.data?.length === 0 && (
 				<div className="flex flex-col items-start gap-3 rounded-lg border border-border p-6">
 					<p className="text-muted-foreground">You haven't created any events yet.</p>
@@ -64,7 +68,11 @@ export function MyEventsPage() {
 					</Button>
 				</div>
 			)}
-			{actionError && <p className="text-sm text-destructive">{errorMessage(actionError)}</p>}
+			{actionError && (
+				<p role="alert" className="text-sm text-destructive">
+					{errorMessage(actionError)}
+				</p>
+			)}
 
 			{events.data && events.data.length > 0 && (
 				<ul className="rounded-lg border border-border divide-y divide-border">

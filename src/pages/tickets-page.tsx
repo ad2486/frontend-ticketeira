@@ -26,7 +26,11 @@ export function MyTicketsPage() {
 					<Skeleton className="h-32 rounded-none" />
 				</div>
 			)}
-			{error && <p className="text-destructive">{errorMessage(error)}</p>}
+			{error && (
+				<p role="alert" className="text-destructive">
+					{errorMessage(error)}
+				</p>
+			)}
 			{data?.length === 0 && (
 				<div className="flex flex-col items-start gap-3">
 					<p>You have no tickets yet.</p>
@@ -50,7 +54,7 @@ export function MyTicketsPage() {
 						>
 							<div className="flex-1 flex flex-col gap-2 p-5">
 								<div className="flex flex-wrap items-start gap-2">
-									<h2 className="font-display uppercase font-extrabold leading-[0.9] tracking-tight text-3xl">
+									<h2 className="min-w-0 break-words font-display uppercase font-extrabold leading-[0.9] tracking-tight text-3xl">
 										{event.title}
 									</h2>
 									{isCanceled && <Badge variant="destructive">Event canceled</Badge>}

@@ -35,7 +35,7 @@ export function EventDetailPage() {
 	if (event.isPending) {
 		return (
 			<div className="max-w-6xl mx-auto px-4 py-8 grid gap-8 md:grid-cols-[minmax(0,1fr)_320px]">
-				<p className="sr-only">Loading...</p>
+				<p className="sr-only">Loading…</p>
 				<Skeleton className="h-72 w-full max-w-md rounded-none" />
 				<Skeleton className="h-64 w-full rounded-xl md:col-start-2 md:row-start-1 self-start" />
 			</div>
@@ -117,7 +117,11 @@ export function EventDetailPage() {
 							</Link>
 						</Button>
 					)}
-					{buy.error && <p className="text-sm text-destructive">{errorMessage(buy.error)}</p>}
+					{buy.error && (
+						<p role="alert" className="text-sm text-destructive">
+							{errorMessage(buy.error)}
+						</p>
+					)}
 				</CardContent>
 			</Card>
 		</div>

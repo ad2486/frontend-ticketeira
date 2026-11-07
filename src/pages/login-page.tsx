@@ -54,6 +54,8 @@ export function LoginPage() {
 							id="email"
 							label="Email"
 							type="email"
+							autoComplete="email"
+							spellCheck={false}
 							registration={register("email")}
 							error={formState.errors.email?.message}
 						/>
@@ -61,11 +63,16 @@ export function LoginPage() {
 							id="password"
 							label="Password"
 							type="password"
+							autoComplete="current-password"
 							registration={register("password")}
 							error={formState.errors.password?.message}
 						/>
 
-						{login.error && <p className="text-sm text-destructive">{errorMessage(login.error)}</p>}
+						{login.error && (
+							<p role="alert" className="text-sm text-destructive">
+								{errorMessage(login.error)}
+							</p>
+						)}
 						<Button type="submit" className="w-full" disabled={login.isPending}>
 							Log in
 						</Button>

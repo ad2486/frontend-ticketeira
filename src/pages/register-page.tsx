@@ -53,6 +53,7 @@ export function RegisterPage() {
 						<FormField
 							id="name"
 							label="Name"
+							autoComplete="name"
 							registration={register("name")}
 							error={errors.name?.message}
 						/>
@@ -60,6 +61,8 @@ export function RegisterPage() {
 							id="email"
 							label="Email"
 							type="email"
+							autoComplete="email"
+							spellCheck={false}
 							registration={register("email")}
 							error={errors.email?.message}
 						/>
@@ -74,6 +77,7 @@ export function RegisterPage() {
 						<FormField
 							id="city"
 							label="City"
+							autoComplete="address-level2"
 							registration={register("city")}
 							error={errors.city?.message}
 						/>
@@ -88,7 +92,7 @@ export function RegisterPage() {
 								{...register("state")}
 							>
 								<option value="" disabled>
-									Select...
+									Select…
 								</option>
 								{brazilStates.map((uf) => (
 									<option key={uf} value={uf}>
@@ -96,12 +100,17 @@ export function RegisterPage() {
 									</option>
 								))}
 							</select>
-							{errors.state && <p className="text-sm text-destructive">{errors.state.message}</p>}
+							{errors.state && (
+								<p role="alert" className="text-sm text-destructive">
+									{errors.state.message}
+								</p>
+							)}
 						</div>
 
 						<FormField
 							id="birthDate"
 							label="Birth date"
+							autoComplete="bday"
 							type="date"
 							registration={register("birthDate")}
 							error={errors.birthDate?.message}
@@ -116,7 +125,9 @@ export function RegisterPage() {
 						/>
 
 						{signUp.error && (
-							<p className="text-sm text-destructive">{errorMessage(signUp.error)}</p>
+							<p role="alert" className="text-sm text-destructive">
+								{errorMessage(signUp.error)}
+							</p>
 						)}
 						<Button type="submit" className="w-full" disabled={signUp.isPending}>
 							Create account

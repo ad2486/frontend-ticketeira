@@ -125,7 +125,7 @@ export function CreateEventPage() {
 									{...register("state")}
 								>
 									<option value="" disabled>
-										Select...
+										Select…
 									</option>
 									{brazilStates.map((uf) => (
 										<option key={uf} value={uf}>
@@ -133,7 +133,11 @@ export function CreateEventPage() {
 										</option>
 									))}
 								</select>
-								{errors.state && <p className="text-sm text-destructive">{errors.state.message}</p>}
+								{errors.state && (
+									<p role="alert" className="text-sm text-destructive">
+										{errors.state.message}
+									</p>
+								)}
 							</div>
 						</div>
 
@@ -177,7 +181,9 @@ export function CreateEventPage() {
 						/>
 
 						{createEvent.error && (
-							<p className="text-sm text-destructive">{errorMessage(createEvent.error)}</p>
+							<p role="alert" className="text-sm text-destructive">
+								{errorMessage(createEvent.error)}
+							</p>
 						)}
 						<Button type="submit" className="w-full" disabled={createEvent.isPending}>
 							Create event

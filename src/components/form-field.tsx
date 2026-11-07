@@ -26,10 +26,16 @@ export function FormField({
 				id={id}
 				type={type}
 				aria-invalid={error ? true : undefined}
+				// Screen readers read the error when the field gets focus.
+				aria-describedby={error ? `${id}-error` : undefined}
 				{...rest}
 				{...registration}
 			/>
-			{error && <p className="text-sm text-destructive">{error}</p>}
+			{error && (
+				<p id={`${id}-error`} role="alert" className="text-sm text-destructive">
+					{error}
+				</p>
+			)}
 		</div>
 	);
 }
