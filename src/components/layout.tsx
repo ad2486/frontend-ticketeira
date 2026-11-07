@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, Outlet, useNavigate } from "react-router";
 import { api } from "@/api/client";
-import { ApiError } from "@/api/errors";
+import { queryKeys } from "@/api/query-keys";
+import { unwrap } from "@/api/unwrap";
 import { logout } from "@/auth/session";
 import { useIsLoggedIn } from "@/auth/use-is-logged-in";
 import { Button } from "./ui/button";
@@ -16,14 +17,10 @@ export function RootLayout() {
 	};
 
 	const me = useQuery({
-		queryKey: ["me"],
+		queryKey: queryKeys.me,
 		enabled: isLoggedIn,
 		retry: false,
-		queryFn: async () => {
-			const { data, error, response } = await api.GET("/users/me");
-			if (error) throw new ApiError(response.status);
-			return data;
-		},
+		queryFn: () => unwrap(api.GET("/users/me")),
 	});
 	return (
 		<div className="min-h-screen flex flex-col bg-background text-foreground">

@@ -1,14 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/api/client";
+import { queryKeys } from "@/api/query-keys";
+import { unwrap } from "@/api/unwrap";
 
 export function EventsPage() {
 	const { data, isPending, error } = useQuery({
-		queryKey: ["events"],
-		queryFn: async () => {
-			const { data, error } = await api.GET("/events/");
-			if (error) throw error;
-			return data;
-		},
+		queryKey: queryKeys.events(),
+		queryFn: () => unwrap(api.GET("/events/")),
 	});
 
 	if (isPending) return <p>Loading...</p>;

@@ -4,11 +4,12 @@ import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router";
 import { z } from "zod/v4";
 import { api } from "@/api/client";
-import { ApiError } from "@/api/errors";
+import { errorMessage } from "@/api/errors";
+import { queryKeys } from "@/api/query-keys";
+import { unwrap } from "@/api/unwrap";
 import { setAccessToken } from "@/auth/token";
+import { FormField } from "@/components/form-field";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 const loginSchema = z.object({
 	email: z.email("Invalid email"),
@@ -16,13 +17,6 @@ const loginSchema = z.object({
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
-
-function loginErrorMessage(error: Error) {
-	if (error instanceof ApiError && error.status === 401) return "Invalid email or password";
-	if (error instanceof ApiError && error.status === 429)
-		return "Too many attempts, try again in a minute";
-	return "Something went wrong, try again";
-}
 
 export function LoginPage() {
 	const navigate = useNavigate();
@@ -33,29 +27,32 @@ export function LoginPage() {
 		resolver: zodResolver(loginSchema),
 	});
 	const login = useMutation({
-		mutationFn: async (data: LoginForm) => {
-			const { data: res, error, response } = await api.POST("/auth/login", { body: data });
-			if (error) throw new ApiError(response.status);
-			return res;
-		},
+		mutationFn: (data: LoginForm) => unwrap(api.POST("/auth/login", { body: data })),
 		onSuccess: (res) => {
 			setAccessToken(res.accessToken);
-			queryClient.invalidateQueries({ queryKey: ["me"] });
+			queryClient.invalidateQueries({ queryKey: queryKeys.me });
 			navigate(from, { replace: true });
 		},
 	});
 	const onSubmit = (data: LoginForm) => login.mutate(data);
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
-			<Label htmlFor="email">Email</Label>
-			<Input id="email" type="email" {...register("email")} />
-			{formState.errors.email && <p>{formState.errors.email.message}</p>}
+			<FormField
+				id="email"
+				label="Email"
+				type="email"
+				registration={register("email")}
+				error={formState.errors.email?.message}
+			/>
+			<FormField
+				id="password"
+				label="Password"
+				type="password"
+				registration={register("password")}
+				error={formState.errors.password?.message}
+			/>
 
-			<Label htmlFor="password">Password</Label>
-			<Input id="password" type="password" {...register("password")} />
-			{formState.errors.password && <p>{formState.errors.password.message}</p>}
-
-			{login.error && <p>{loginErrorMessage(login.error)}</p>}
+			{login.error && <p>{errorMessage(login.error)}</p>}
 			<Button type="submit" disabled={login.isPending}>
 				Log in
 			</Button>
