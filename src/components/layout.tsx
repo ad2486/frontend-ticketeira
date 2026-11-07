@@ -29,6 +29,7 @@ export function RootLayout() {
 					<Link to="/">Ticketeira</Link>
 					{isLoggedIn ? (
 						<div className="flex items-center gap-4">
+							<Link to="/tickets">My tickets</Link>
 							<span>{me.data?.name}</span>
 							<Button variant="ghost" onClick={handleLogout}>
 								Log out
