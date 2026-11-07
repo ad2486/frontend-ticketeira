@@ -30,6 +30,8 @@ export function RootLayout() {
 					{isLoggedIn ? (
 						<div className="flex items-center gap-4">
 							<Link to="/tickets">My tickets</Link>
+							<Link to="/my-events">My events</Link>
+							<Link to="/events/new">Create event</Link>
 							<span>{me.data?.name}</span>
 							<Button variant="ghost" onClick={handleLogout}>
 								Log out
