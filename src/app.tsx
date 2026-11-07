@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { RequireAuth } from "./auth/require-auth";
 import { RootLayout } from "./components/layout";
+import { EventDetailPage } from "./pages/event-detail-page";
 import { EventsPage } from "./pages/events-page";
 import { LoginPage } from "./pages/login-page";
 import { NotFoundPage } from "./pages/not-found-page";
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
 			{ index: true, element: <EventsPage /> },
 			{ path: "login", element: <LoginPage /> },
 			{ path: "register", element: <RegisterPage /> },
+			{ path: "events/:id", element: <EventDetailPage /> },
 			{
 				element: <RequireAuth />,
 				children: [{ path: "tickets", element: <MyTicketsPage /> }],
