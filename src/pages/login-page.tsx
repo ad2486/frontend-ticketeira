@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { z } from "zod/v4";
 import { api } from "@/api/client";
 import { ApiError } from "@/api/errors";
@@ -27,6 +27,8 @@ function loginErrorMessage(error: Error) {
 export function LoginPage() {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
+	const location = useLocation();
+	const from = (location.state as { from?: string } | null)?.from ?? "/";
 	const { register, handleSubmit, formState } = useForm<LoginForm>({
 		resolver: zodResolver(loginSchema),
 	});
@@ -39,7 +41,7 @@ export function LoginPage() {
 		onSuccess: (res) => {
 			setAccessToken(res.accessToken);
 			queryClient.invalidateQueries({ queryKey: ["me"] });
-			navigate("/");
+			navigate(from, { replace: true });
 		},
 	});
 	const onSubmit = (data: LoginForm) => login.mutate(data);
